@@ -16,9 +16,11 @@
         <org.jooq.version>3.14.4</org.jooq.version>
 
         <!-- TODO: Change the database driver configuration here and also in AbstractTest for the tests -->
+        <!--
         <db.url>jdbc:h2:~/mcve</db.url>
         <db.username>sa</db.username>
         <db.password></db.password>
+        -->
 
         <!-- TODO: Fix Java, kotlin, or scala versions -->
         <java.version>11</java.version>
@@ -33,6 +35,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${org.jooq.groupId}</groupId>
+            <artifactId>jooq-meta-extensions</artifactId>
+            <version>${org.jooq.version}</version>
         </dependency>
 
         <!-- Database access -->
@@ -93,13 +101,15 @@
 
                     <!-- TODO: Possibly edit the code generation configuration here, to reflect what you're doing -->
                     <configuration>
-                        <jdbc>
+                        <!--jdbc>
                             <url>${db.url}</url>
                             <user>${db.username}</user>
                             <password>${db.password}</password>
-                        </jdbc>
+                        </jdbc-->
                         <generator>
+                            <!--name>org.jooq.codegen.DefaultGenerator</name-->
                             <database>
+                                <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
                                 <includes>.*</includes>
                                 <schemata>
 
@@ -113,6 +123,24 @@
                                         <inputSchema>MCVE</inputSchema>
                                     </schema>
                                 </schemata>
+                                <properties>
+                                    <property>
+                                        <key>scripts</key>
+                                        <value>src/main/resources/db/migration/*.sql</value>
+                                    </property>
+                                    <property> {
+                                        <key>sort</key>
+                                        <value>flyway</value>
+                                    </property>
+                                <property>
+                                    <key>unqualifiedSchema</key>
+                                    <value>none</value>
+                                </property>
+                                <property>
+                                    <key>defaultNameCase'</key>
+                                    <value>as_is'</value>
+                                    </property>
+                                </properties>
                             </database>
                             <generate>
                                 <generatedAnnotation>false</generatedAnnotation>
@@ -217,7 +245,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>5.2.1</version>
@@ -237,7 +265,7 @@
                         <location>filesystem:src/main/resources/db/migration</location>
                     </locations>
                 </configuration>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>${org.jooq.groupId}</groupId>
